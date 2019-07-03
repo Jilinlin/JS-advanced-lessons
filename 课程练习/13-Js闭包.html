@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JS闭包</title>
+</head>
+<body>
+	
+</body>
+<script>
+	// function fn1(){
+	// 	var x = 1;
+	// }
+	// console.log(x);//报错，无法访问函数内部的变量
+
+	//解决办法
+	//1
+	function fn1(){
+		var x = 1;
+		function fn2(){
+			return ++x;
+		}
+		return fn2();//fn2()在fn1()中执行
+	}
+	fn1();//2
+	//2
+	//基础闭包结构
+	//借助fn1中的另一个函数来访问fn1中定义的局部变量
+	//无法直接访问函数内的局部变量，要借助函数内部的另一个函数来访问局部变量
+	//闭包，函数通过返回函数(fn1)内部定义的函数(fn2)来访问fn1内部的局部变量(x)
+	//snippet中观察闭包
+	function fn1(){
+		var x = 1;
+		function fn2(){
+			return ++x;
+		}
+		return fn2;//fn2不直接执行，而是返回fn2函数
+	}
+	var fn3 = fn1();//fn3就是fn2函数
+	console.log(fn3());//2
+	console.log(fn3());//3 x不会被释放 因此为3
+
+
+	//addNum函数调用完，start不会被释放，start会一直保存在内存当中
+
+	//闭包；函数addnum内部定义的函数（return匿名函数）与其相关作用域中的变量（start）形成的实体，start会一直保持在内存中，不会被释放
+
+	function addNum(start){
+		return function(step){
+			start += step;
+			return start;
+		}
+	}
+	var fn3 = addNum(10);
+	console.log(fn3(1));//11
+	console.log(fn3(1));//12
+
+	//若一个函数离开了它被创建时的作用域，他还是会与这个作用域的变量相关联
+	function foo(){
+		var i = 0;
+		function bar(){
+			console.log(++i);
+		}
+		return bar;
+	}
+	var a = foo();
+	var b = foo();
+	a();
+	a();
+	b();
+	//形成了两个闭包，之间没有任何关联
+
+	//闭包所带来的影响
+	//1.闭包可以访问到函数内部定义的变量
+	//2.可以让关联作用域中特定变量（即闭包中实际用到的变量）保持在内存中
+
+	function foo(x){
+		var tmp = 10;
+		return function(y){
+			console.log(x+y,++tmp);
+		}
+	}
+	var fee = foo(10);
+	fee(10);//20 11
+	fee(10);//20 12
+
+	var tmp = 10;//全局变量
+	function foo(x){
+		return function(y){
+			console.log(x+y,++tmp);
+		}
+	}
+	var fee = foo(10);
+	fee(10);//20 11
+	fee(10);//20 12
+
+	//以函数对象形式返回
+	function foo(x){
+		var tmp = 3;
+		return function(y){
+			x.count = x.count ? x.count+1:1;
+			console.log(x+y+tmp,x.count);
+		}
+	}
+	var age = new Number(2);
+	var bar = foo(age);
+	bar(10);//15 1
+	bar(10);//15 2
+	bar(10);//15 3
+
+	function counter(){
+		var n = 0;
+		return{
+			count:function(){return ++n;},
+			reset:function(){n=0;return n;}
+		}
+	}
+	var c = counter(),d=counter();
+	console.log(c.count());//1
+	console.log(d.count());//1
+	console.log(c.reset());//0
+	console.log(c.count());//1
+	console.log(d.count());//2
+
+
+	//闭包的作用：是函数中的变量被保存在内存中不被释放 
+	//通过闭包来访问隐藏在函数作用域内的局部变量
+
+
+	function fn(){
+		var a;
+		return function(){
+			return a||(a=document.body.appendChild(document.createElement('div')));
+		}
+	};
+	var f = fn();
+	f();
+	f();
+
+	function closureExample(objID,text,timedelay){
+		setTimeout(function(){
+			console.log(objID,text);
+		},timedelay);
+	}
+	closureExample("myDiv","Closure is Create",1000);
+</script>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="text" class="forminput" id="username">
+</body>
+<script>
+	//JS原型继承的方式及其优缺点
+	//一
+	//对象-对象的继承
+	//多个对象继承于一个原型时，存在原型共享
+	var superObj = {
+		x:1,
+		y:2
+	};
+	var superObj_First = Object.create(superObj);
+	var superObj_Second = Object.create(superObj);
+	superObj_First.__proto__.x = 5;//在其原型上添加属性
+	console.log(superObj_Second.x);//5  原型共享
+
+	var superObj = {
+		x:1,
+		y:2
+	};
+	var superObj_First = Object.create(superObj);
+	var superObj_Second = Object.create(superObj);
+	superObj_First.x = 5;//在其自身上添加属性
+	console.log(superObj_Second.x);//1
+
+	// 在其自身上添加属性和在其原型上添加属性是不一样的
+
+	//二
+	//构造函数实现的对象-对象的原型继承的原型共享问题
+	//通过student实例化得到的对象能够继承Person对象方法
+	function Person(name){
+		this.name = name;
+	};
+	Person.prototype.age = 22;
+	Person.prototype.showName = function(){console.log(this.name)};
+
+	function Student(id){
+		this.id = id;
+	}
+	Student.prototype = new Person("Mike");
+	//person 
+	//name属性Mike
+	//person.__proto__age 
+	//person.__proto__.showName
+
+	var s1 = new Student(2017001);
+	var s2 = new Student(2017002);
+	//S1自身上面没有age ，S1的一级原型s1.__proto__==Student.prototype
+	//Student.prototype = person （使用person构造函数实例化得到的对象 new Person("Mike")）
+	//s1.__proto__==person
+	//person对象上没有age属性 
+	//s1.__proto__.__proto__ == person.__proto__
+	//person.__proto__==Person.prototype
+
+	//存在变量共享
+	console.log(s1.name,s1.age,s1.id);//Mike 22 2017001
+	console.log(s2.name,s2.age,s2.id);//Mike 22 2017002
+	s1.__proto__.name = "Jack";//s1.__proto__==Student.prototype
+	console.log(s2.name);//Jack
+	s2.__proto__.__proto__.age = 99;
+	console.log(s2.age);
+	//age比name要高一级
+
+	// s1.__proto__ == Student.prototype
+	// Student.prototype = person
+	// person.__proto__ == Person.prototype
+	// s1.__proto__.__proto__ == Person.prototype
+
+	//通常将方法加到prototype上去 属性写到函数内部
+
+	//三
+	//模拟类-类继承的形式 一
+	function Person(name,age){
+		this.name = name;
+		this.age = age;
+	};
+	Person.prototype.showName = function(){
+		console.log(this.name);
+	};
+	function Student(name,age,id){
+		Person.call(this,name,age);
+		//Person.call切换了Person函数内部的this指向 this变成当前Student实例化的对象 相当于this.Person(name,age);
+		//call 调用、执行Person方法 指明方法的上下文意思 改变主体之前是person现在是this.Person this调用Person方法 传入参数为name和age
+		// 往当前对象上添加name和age属性
+		//构造函数也可以直接调用，他也是函数
+		//call方法使用一个指定的this
+		this.id = id;
+	}
+	Student.prototype.__proto__ = Person.prototype;//false
+	var s1 = new Student("xxx",22,2017001);//此时this指s1
+	//s1.__proto__ == Student.prototype'
+	//Student.prototype.__proto__ == Person.prototype
+	//s1.__proto__.__proto__ == Person.prototype
+	console.log(s1);
+	var s2 = new Student("www",23,2017002);
+	console.log(s2);
+
+	//模拟类-类继承的形式 二
+	function Person(name,age){
+		this.name = name;
+		this.age = age;
+	};
+	Person.prototype.showName = function(){
+		console.log(this.name);
+	};
+	function Student(name,age,id){
+		Person.call(this,name,age);
+		this.id = id;
+	}
+	console.log(Student.prototype);
+	Student.prototype = Object.create(Person.prototype);//false
+	//创建了一个新的对象 新的对象的__proto__是Person.prototype
+	// var p1 = Object.create(Person.prototype);
+	// Student.prototype = p1;
+
+	//覆盖后，原有的constructor就没有了，需要重新指定
+	Student.prototype.constructor = Student;//构造函数指向他自己
+	console.log(Student.prototype);
+	var s1 = new Student("xxx",22,2017001);
+	var s2 = new Student("www",23,2017002);
+
+	// 所有的构造函数上都有constructor ，指向自己
+
+
+	// 静态方法和原型方法
+	function BaseClass(){
+
+	}
+	BaseClass.fn1 = function(){
+		console.log("静态方法");
+	}
+	BaseClass.fn1();//直接定义在构造函数上的方法，也要通过构造函数来调用
+
+	BaseClass.prototype.fn2 = function(){
+		console.log("原型方法");
+	}
+
+	var base = new BaseClass();
+	console.log(base.__proto__==BaseClass.prototype);
+	base.fn1();//报错 base.fn1 is not a function
+	base.fn2();
+
+
+	//constructor
+	function Person(username,age){
+		this.username = username;
+		this.age = age;
+	}
+	console.log(Person.prototype.constructor == Person);
+
+	var person = new Person("zhangsan",20);
+	console.log(person.constructor == Person); //自身没有，但原型链上有
+
+	var obj = new Object();
+	console.log(obj.constructor == Object);
+
+
+
+
+	//与body中input相关联
+	(function(w,d){
+		//构造函数，构造函数会有配置参数
+		function inputIdentify(inputId){
+			this._init(inputId);//dom初始化
+			this._effect();//操作
+
+	    }
+	    //相关方法
+	    inputIdentify.prototype._init = function(inputId){
+	    	var inputObject = d.getElementById(inputId);
+	    	this.inputObject = inputObject;
+
+	    }
+	    inputIdentify.prototype._effect = function(){
+	    	this.inputObject.onblur = function(){
+	    		alert("失去焦点");
+	    	}
+	    	this.inputObject.onfocus =  function(){
+	    		alert("获得焦点");
+	    	}
+	    }
+	    w.inputIdentify = inputIdentify;
+	})(window,document)
+
+	var input1 = new inputIdentify("username");
+
+	
+	
+
+
+
+
+
+	
+</script>
+</html>

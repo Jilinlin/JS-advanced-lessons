@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>基本数据类型</title>
+</head>
+<body>
+	
+</body>
+<script>
+	// 基本数据类型相关操作，如何将其与对象关联起来
+	// 基本数据类型在操作过程中，会有自动装箱过程
+	// 生成临时对象，临时对象在使用完成后会自动释放
+
+	// 1.Number
+	var num = 10;
+	num.toString();//所有类型变量都有toString方法
+
+	//过程
+	var num = 10;
+	var numObject = new Number(num);//装箱得到一个对象，临时的，会被立刻释放
+	numObject.toString();//转换成对象的方法
+
+	//自动释放过程
+	num.p = 10;//相当于把值添加到临时对象上
+	console.log(num.p); //修改只是发生在临时对象上，临时对象并不会保留下来
+	var t = num.p;
+	console.log(t);//undefined
+
+	//第一个方法
+	console.log((345.67).toFixed(1));//保留特定位数，最后一位四舍五入 345.7
+
+	var num1 = 11.26;
+	var numObject2 = new Number(num1);
+	console.log(numObject2);//调用属性或方法在临时对象的什么地方
+
+	console.log(num1.toFixed(2));//11.26
+
+	//原型方法
+	var n1 = 12345.6789;
+	console.log(n1.toFixed(2));
+	console.log(n1.toPrecision(2));//1.2e+4 指数形式  有效位数 10的几次方 四舍五入 在对象的值超出指定位数时将其转换为指数计数法
+	console.log(n1.toPrecision(3));//1.23e+4
+	console.log(n1.toPrecision(4));//1.235e+4
+	console.log(n1.toPrecision(5));//123456
+	console.log(n1.toString());//将数字转换为字符串
+	console.log(n1.toExponential());
+
+	//构造器属性 静态属性
+
+
+
+	//2.String
+	console.log("abcde".charAt(2));//"c"
+
+	//过程
+	var str1 = "abcdef";
+	var strObject = new String(str1);
+	strObject.charAt(2);//返回特定索引位置的字符
+
+	//字符串比较
+	// 字符排序，返回0或非0
+	console.log("B".localeCompare("A"));//1 "B">"A"
+	console.log("A".localeCompare("A"));//0
+	console.log("A".localeCompare("B"));//-1 "A"<"B"
+
+	//字符串构造器方法（静态方法、编码方法）
+	console.log( String.fromCharCode(97,98,99)); //abc 根据编码生成特定字符
+
+	// 字符串的原型方法
+	//基本数据类型，变量的proto属性 == 变量的构造函数的prototype属性
+	//num.__proto__ == Number.prototype
+	var num1 = 20;
+	console.log(num1.__proto__);//num1的proto属性
+	console.log(Number.prototype);
+
+	//实际字符串操作的方法
+	//（1）提取字符串
+	var str = "abcdefgh";
+	console.log(str.charAt(1));//返回特定索引位置的字符 b 
+
+    console.log(str.charCodeAt(0));//返回特定索引位置的字符的unicode码 97
+
+    console.log(str.slice(2));//一个参数表示起始位置
+    console.log(str.slice(0,3));//根据特定位置进行切片 abc
+    console.log(str.slice(3,0));//空
+    console.log(str.slice(1,-1));//bcdefg 
+
+    console.log(str.substr(0,3));//截取字符串 起始位置和截取长度 abc
+    console.log(str.substr(0,-1));//空
+
+    console.log(str.substring(0,3));//返回从开始索引到结束索引的子集 abc
+    console.log(str.substring(3,0));//如果起始大于结束就互换位置 abc
+    console.log(str.substring(-1,3));//如果小于0，就从0开始  abc
+    console.log(str.substring(-1,12));//超出索引就不算了 abcdefgh
+
+    var str1 = "abc*def*gh";
+    console.log(str1.split("*"));//生成一个数组 ["abc", "def", "gh"]
+    console.log(str1.split("*",2));//生成元素的个数 ["abc", "def"]
+    console.log(str1.split(""));//每个字符都分隔开
+
+    //（2）字符串变换
+    var str2 = "     abc    d   ";
+    console.log(str2.trim());//将两边的空格去掉
+
+    var str3 = "hello";
+    console.log(str3.concat("world"));//字符串拼接
+
+    var str4 = "ASBGY"
+    console.log(str4.toLowerCase());//转化为小写 asbhy
+    console.log(str3.toUpperCase());//转换为大写 HELLo
+
+    var str = "abcedfghbc";
+    //查找子串
+    console.log(str.indexOf("bc")); //1
+    console.log(str.indexOf("bc",4)); //8
+    //倒着查找子串
+    console.log(str.lastIndexOf("bc")); //8
+
+
+    //3.Boolean
+
+    //所有的对象都是真值
+    console.log(Boolean({}));//true
+    console.log(Boolean([]));//true
+    console.log(Boolean(new Boolean(false)));//true
+    console.log(Boolean(function foo(){}));//true
+    
+    console.log(null);//false
+
+
+
+	
+
+</script>
+</html>

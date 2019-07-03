@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	// ES6新增的箭头函数
+	var obj = {
+		objName: "obj1",
+		showName:function(){
+			var intervalId = setTimeout(function(){
+				console.log(this);//window
+				console.log(this.objName);//undefined
+	        },300);
+	        //箭头函数
+	        // 多层嵌套时改变this指向
+	        //替换function
+	        // 减少冗余的代码，避免this的指向错误
+	        // 箭头函数如果没有参数或需要多个参数时，就用一个圆括号代表参数部分
+	        var intervalId = setTimeout(()=>{
+				console.log(this);//obj
+				console.log(this.objName);//obj1
+	        },300);
+		}
+	}
+	obj.showName();
+
+	//变量转存
+
+	//ES6对函数参数默认值的扩展
+
+	function fn1(a,b=3,c=4){
+		return a+b+c;
+	}
+	console.log(fn1(1,2,3));//6
+	console.log(fn1(1,2));//7
+	console.log(fn1(1));//8
+	console.log(fn1(1,0,0));//1
+
+	//如果有参数使用了默认值，带默认值的参数变量是默认声明的，所以函数体内不能再用let或const重复声明
+	//参数一般有顺序，有默认值的参数应该是尾参数，这样可以使有默认值的用默认值 没有默认值的用传递的值
+
+
+	// 剩余操作符
+	// 添加了剩余操作符的参数，会得到一个数组
+	// 接受剩余的实参，写在其他参数的后面
+	function fn2(x,...rest){
+		console.log(x);
+		console.log(rest);
+	}
+	fn2(1,2,3,4,5);
+
+	// 扩展操作符
+	// 把一个数组转换为用逗号分隔的参数序列
+	// spread扩展操作符
+	// rest的逆过程，将一个集合打散作为单个元素
+
+	function fn3(x){
+		console.log(x);
+		console.log(arguments);
+	}
+	fn3(1,...[2,3]);
+	fn3(1,2,3);
+	
+</script>
+</html>

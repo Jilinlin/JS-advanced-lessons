@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="div1" style="width: 100px; height: 50px;"></div>
+</body>
+<script>
+	//只有函数会形成局部作用域，其余是全局作用域
+	var a = 1;//全局变量，所有位置都可访问到
+	function fn1(){
+		console.log(a);//1
+		var b = 2;
+		var c = 3;
+		function fn2(){
+			var c = 30;//(1)
+			// c = 30;//(2)当前作用域没有定义，会从上层定义域找，进行赋值 因此外层输出C会为30
+			var d = 4;
+			console.log(c);//30
+		}
+		fn2();
+		console.log(c);//(1)3
+		// console.log(c);//(2)30
+		// console.log(d);//报错
+	}
+	//fn2();//报错 fn2的作用范围是fn1函数内 无法调用
+	fn1();
+
+
+	//预解析仅在作用域中进行提升
+	function fn1(){
+		function fn2(){
+			var c;
+			var d;
+			c=30;
+			d=4;
+		}
+		var b;
+		var c;
+		b=2;
+		c=3;
+	}
+
+
+	//JS中变量的定义是静态的，与调用无关
+	var username = "jack";
+	function foo(){
+		// username = "nill";
+		console.log(username);//外层找找到的不是nike而是jack 定义后作用域范围就确定与调用无关
+	}
+	function bar(){
+		var username = "nike";
+		foo();
+		console.log(username);
+	}
+	bar();//jack nike
+
+
+	//只要完成定义了，找这个变量就确定了，与调用形式无关
+	var username = "jack";
+	function foo(){
+		console.log(username);
+	}
+	foo();
+	function bar(){
+		var username = "nike";
+		foo();
+		console.log(username);
+	}
+	bar();//jack、jack、nike
+
+	// 通过newfunction创建的函数对象不一定遵从静态词法作用域，他找全局变量
+	var scope = "global";
+	function checkScope(){
+		var scope = "local";
+		return new Function("return scope;");
+	}
+	console.log(checkScope()());//global
+
+	//ES5 没有块级作用域 采用的是函数级作用域就是函数把变量进行限定
+	if(true){
+		var a = 2;
+	}
+	console.log(a);//2
+
+	//ES6 有块级作用域
+	if(true){
+		let b = 3;//变量b只存在于块级作用域内
+		console.log(b);//3
+	}
+	// console.log(b);//b未定义 报错
+
+
+
+	//没有块级作用域，造成的变量污染
+	// var userId = 5;
+	// document.onclick = function(){
+	// 	console.log(userId);//(1)30 (2)5
+	// 	userId = 10;
+	// }
+	//一大段代码
+	// (1)
+	// if(true){
+	// 	var userId = 30;//想把userId限制在这个代码块里面，但是ES5没有块级作用域
+	// }
+
+	// (2)
+	//函数的立即执行来进行变量限定
+	// (function(){
+	// 	if(true){
+	// 	var userId = 30;
+	//     }
+	// }());
+
+
+
+	//执行上下文
+	//上下文，当某行代码的执行过程时，他的上下文环境
+	//当前作用域包含了变量、函数调用栈、this指向
+	//全局作用域中this指向window
+	var x = 5;
+	var y = 6;
+	function foo(){
+		var a = 1;
+		var b =2;
+		function bar(){
+			var c =3;
+			var d =4;
+		}
+		bar();
+	}
+	foo();//新建小的代码块 sources snippets
+
+	console.log("小明回家");
+	var xx = ["书桌","书包","铅笔盒"];
+	console.log("在家-做作业中");
+	function goToStore(){
+		var yy = ["文具店老板","出售的文具"];
+		console.log("在文具店买文具中");
+		console.log("在文具店买文具中，发现没带钱");
+		goToBank();
+		console.log("在文具店买好文具 返回家");
+	}
+	function goToBank(){
+		var zz = ["银行职员","柜员机"];
+		console.log("在银行取钱 返回文具店");
+	}
+	console.log("在家做作业发现笔没有");
+	goToStore();
+	console.log("在家继续做作业");
+
+	// 避免全局作用下的变量
+	// 作用域链 当需要变量或函数时 逐级查找
+	var div1 = document.getElementById("div1");
+	var username = "zhangsan";
+	function foo(){
+		div1.onclick = function(){
+		    this.innerHTML = username;
+	    }
+	}
+	foo();
+
+
+	// 防止执行效率过低
+	// 将window和document作为参数直接传进去
+	(function(w,d){
+		w.onload = function(){
+
+		}
+	})(window,document)
+
+
+
+
+
+</script>
+</html>

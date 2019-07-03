@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务二</title>
+</head>
+<body>
+	
+</body>
+<script>
+	function foo(name1,str1){
+		var n = str.indexOf(name);
+		switch(n){
+			case 0:
+			    console.log("该姓氏之前姓氏不存在");
+			    break;
+			case -1:
+			    console.log("该姓氏不存在");
+			    break;
+			default:
+			    console.log(n);
+			    console.log(str.substr(0,n));
+
+		}
+	}
+	var name = "周";
+	var str = "赵钱孙李周吴郑王冯陈楮卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜";
+	foo(name,str);
+</script>
+</html>

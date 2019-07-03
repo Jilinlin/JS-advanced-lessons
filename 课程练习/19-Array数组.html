@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	//数组创建
+	var arr1 = ['a','b','c','d'];
+	var arr2 = arr1;
+	arr1[0] = 'e';
+	console.log(arr2);//["e", "b", "c", "d"]
+
+	//稀疏数组
+	var arr1 = [,2,,4];
+	console.log(arr1.length);//4
+	Array.prototype.min = function(){
+		return("min");
+	}
+
+	for(var i in arr1){//通常遍历对象，不建议遍历数组,会把扩展的方法遍历出来
+		console.log(i,arr1[i]);//会跳过
+	}
+
+	//多维数组
+	var table = new Array(5);
+	for(var i = 0;i<table.length;i++){
+		table[i] = new Array(5);
+	}
+	for(var row=0;row<table.length;row++){
+		for(var col=0;col<table[row].length;col++){//遍历元素
+			table[row][col]=row*col;
+		}
+	}
+	var product = table[2][4];
+
+
+
+	//1判断方法是静态方法（构造函数调用）还是原型方法（实际对象调用），调用形式不一样。
+	//2确定这个方法是用来做什么的（1）是否对原变量产生影响（2）最终的作用效果是什么样
+	//3判断方法的参数分别是什么（1）值参数（2）回调函数的形式
+	//如果参数是回调函数的形式，需要判断回调函数的参数是什么
+	//如果是值类型参数，判断参数所代表的意义
+	//4确定方法调用的返回值
+
+
+	
+	var arr1=[1,2,3];
+	arr1.reverse();//改变已有数组
+	console.log(arr1);
+
+
+	//数组原型方法
+	//Array.prototype.sort()
+	var arr1=[4,1,5,8,2];
+	function compareNumbers(a,b){
+		return a-b;
+	}
+	arr1.sort(compareNumbers);//改变已有数组
+	console.log(arr1);
+
+
+	// concat 生成一个新的数组
+	// slice 生成一个新的数组
+
+
+	//arr.forEach(callback,thisArg)
+	//callback函数接受三个参数 1.element（遍历数组每次取到的元素值）从数组中遍历出的元素 2.index遍历数组每次取到的数组元素的索引 3.arr操作的数组
+	//指明当前回调函数内部this的指向
+	var arr1=['a','b','c','d'];
+	arr1.forEach(function(element,index,arr2){//数组遍历
+		console.log(element,index,arr2);//把数组元素一个一个取出来
+		window.x = 10;
+	},window);
+
+
+	//every 测试数组的所有元素是否都通过了指定函数的测试
+	// arr.every(callback,thisArg)
+	// callback执行的回调函数 thisArg当前的this指向
+
+	var arr3 = [10,20,30,40];
+	var result = arr3.every(function(value){
+		return value>5;
+	});
+	console.log(result);
+
+	//some 测试数组的至少有一个元素是否通过了指定函数的测试
+
+
+	//map会创建一个新的数组 其结果是原来数组执行完函数的结果
+	var arr4 = [1,2,3];
+	var arr5 =arr4.map(function(element){
+		return element*2;
+	})
+	console.log(arr5);
+</script>
+</html>

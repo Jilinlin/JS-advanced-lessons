@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>5-JS语法、表达式及语句</title>
+</head>
+<body>
+	
+</body>
+<script>
+	//表达式分类
+	//语句分类
+
+
+	//ES ECMAScript简写，是语言标准
+	//ES5、ES6 是ECMAScript最主流的两个版本
+	//ES5中没有块作用域
+
+	if(true){
+		var a = 1;
+	}
+	a = 2;//全局变量
+	console.log(a);//2
+
+	if(true){
+		var a = 1;
+	}
+	console.log(a);//1
+	//ES5中没有块作用域的概念，因此会将var a = 1;变量提升到全局，a变成全局变量因此也可访问
+
+	if(false){
+		var a = 1;
+	}
+	console.log(a);//undefined 虽然没有块作用域，变量a是全局变量，但定义提升到全局而赋值仍在代码块中执行，因此结果是undefined
+
+	for(var i = 0;i<3;i++){
+
+	}
+	console.log(i);//3
+	//没有块作用域，变量获取到的都是最终的值。var定义的i是全局变量，i是唯一的，循环结束时i为3
+
+	//JS严格模式
+
+	//对当前页面的所有JS都使用严格模式
+	'use strict'//要写在最前面 否则不报错
+	function fn1(){
+		//对函数内部代码使用严格模式
+		'use strict'
+	}
+
+	//严格模式的应用
+
+	//应用1：变量必须要声明，否则会报错
+	//JS语言中的全局变量是它的缺陷
+	//一个变量没有声明直接用，自动提升为全局变量
+	function fn1(){
+		// 'use strict'//会报错 因为变量未定义
+		username = "zhangsan";
+	}
+	fn1()
+	console.log(username);//可以访问到，username是全局变量
+
+
+	//应用2:
+	//(一般)函数内部this的指向会发生变化，可用其应用性质判断当前代码是否是严格模式
+	//全局变量是定义在window全局对象上的一个属性，全局变量也可看作对象
+
+	var a = 1;//实际上变量定义在全局变量上
+	console.log(window);
+
+	function fn2(){
+		// 'use strict'
+		console.log(this);//普通函数内部的this指向也是window对象
+		//构造函数内部
+	    //对象函数内部
+
+	}
+	fn2()
+	//严格模式下，this会是undefined
+
+	//判断当前代码是否是严格模式
+	function fn3(){
+		var result =(this==undefined?true:false);
+		return result;
+	}
+	console.log(fn3());//false
+
+
+	//应用3:严格模式下禁止删除不可改变的属性和未定义的变量
+	var str = "abcdef";
+	str.length = 1;
+	console.log(str.length);//6 str.length = 1;未起作用
+	//基本数据类型有临时包装对象
+	//1是赋给临时对象，完成操作时释放掉 不起作用
+	// console.log（str.length）;时又创建了一个新的临时对象
+	//对象和对象之间相互独立
+
+	//过程
+	var str = "abcdef";
+	var numObject = new Number(str);
+	numObject.length=1;
+
+	// 严格模式下会报错
+	//字符串的length是个只读属性，严格模式下会报错
+	'use strict'
+	var str3 = "abcdef";
+	str3.length = 1;
+	console.log(str3.length);
+
+	//严格模式下禁止函数参数重名
+	//非严格模式下第二个会覆盖掉第一个
+	function f(a,a,b){
+		return a+b;
+	}
+	console.log(f(2,3,4));
+
+
+	//switch
+
+	//switch、case是进行的值和类型的判断，不会发生隐式类型转换
+	var index = 1;
+	switch(index){
+		case 1:
+		    console.log("星期一");
+		    break;
+		case "1":
+		    console.log("星期一"); //不执行
+		    break;
+		case 2:
+		    console.log("星期二");
+		    break;
+		//case后也可以接表达式
+		default:
+		    console.log("不符合");
+		    break;
+	}
+
+	//没有break 会有语句的穿透性 在满足条件的地方会一直进行下去
+
+	var index = 2;
+	switch(index){
+		case 1: 
+
+		case 2:
+		    
+		case 3:
+		    
+		case 4:
+
+		case 5:
+		      console.log("工作日");
+		      break;
+		case 6:
+		case 7:
+		      console.log("休息日");
+		      break;
+		default:
+		    console.log("不符合");
+	}
+	//计算当前某月某日是一年中的第几天
+
+
+	//for in
+	//可以遍历对象内和原型链上的属性，只要是可枚举的属性
+	var obj1 = {"username":"zhangsan","age":20};
+	// obj1.__proto__.sex = "male";
+	for(var i in obj1){
+		console.log(i,obj1[i]);
+	}
+
+	//for in 可以遍历数组 但他也会遍历到原型链上的属性
+	//他会忽略空缺
+	var arr = [2,,"33"];
+	for(var i in arr){
+		console.log(i,arr[i]);
+	}
+
+
+
+	
+
+
+
+
+	
+
+</script>
+</html>

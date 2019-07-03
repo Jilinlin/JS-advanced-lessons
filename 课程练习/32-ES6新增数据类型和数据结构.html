@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	// symbol函数生成 独一无二的值 避免了属性名的冲突
+	// 字符串是symbol的描述信息
+	// 生成唯一值 参数是变量的描述信息
+	let s1 = Symbol("s1");
+	let s2 = Symbol("s2");
+	let s3 = Symbol("s1");
+
+	console.log(s1 == s3);//fasle
+
+	// Symbol特点：
+	// Symbol函数的参数只是表示Symbol值的描述，相同参数的Symbol函数的返回值是不相等的
+	// Symbol变量不能与其他值进行运算，但可转换成字符串类型
+
+	// Symbol作为对象的属性名，永远不会重复
+	// 使用方式 （1）对象[symbol]
+	// （2）{
+	// 	[symbol]:属性值
+	// }
+
+	let obj = {};
+	obj[s1] = "hello";
+	obj.s1 = "world";//错误 
+	let obj1 = {
+		[s1]:"world";
+	}
+	console.log(obj[s1]);
+
+	// 使用Object.getOwnPropertySymbols方法，可以获取指定对象的所有Symbol属性名
+
+	// Symbol.for( )接受一个字符串作为参数，搜索有没有以该参数作为名称的Symbol值。如 果有，就返回这个Symbol值，否则就新建并返回一个以该字符串为名称的Symbol值
+
+	// Symbol.for()查看是否存在该描述信息的Symbol变量 存在的话直接获取 不存在的话会新建一个Symbol
+	let s1 = Symbol("foo");
+	console.log(Symbol.for("foo") === Symbol.for("foo"));
+	console.log(Symbol("foo") === Symbol("foo"));
+
+
+
+	// set集合中的元素不会有重复值 会将重复元素过滤掉 要用new关键字来创建
+	let s1 = new Set{[1,2,3,4,5,6,7,1,2,3]};
+	console.log(s1)
+	// for of 进行遍历
+	for(let i of s1){
+		console.log(i);
+	}
+
+	// set.size 相当于length
+
+	// Map
+	let m1 = new Map([
+		["username","zhangsan"],
+		["age",20],
+		["sex","male"]
+	]);
+	console.log(m1.keys());//得到键名 MapIterator {"username", "age", "sex"}
+	for(let j of m1.keys()){
+		console.log(j); //username age sex
+	}
+
+
+	console.log(m1.size);//3
+	for(let i of m1){
+		console.log(i);
+	}
+	m1.set("weight","60kg");
+	m1.get("username");
+	m1.delete("username");
+	m1.has("sex");
+
+
+
+
+</script>
+</html>

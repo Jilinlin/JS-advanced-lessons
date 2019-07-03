@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css" />
+</head>
+<body>
+        <div class="jsjy_LL" id="picList" style="position:relative;left: 50%;margin-left: -175px;">
+            <div style="position:absolute">
+                <a href="#" target=_blank><img src="./img/1.jpg" class="ysjy_img" width="350px" height="200px" /></a>
+                <p class="jsjy_LL_title">我校召开2018-2020届家长委员会大会</p>
+            </div>
+            <div style="position:absolute">
+                <a href="#" target=_blank><img src="./img/2.jpg" class="ysjy_img" width="350px" height="200px" /></a>
+                <p class="jsjy_LL_title">传递五四精神 铸就青春华章——我校举行纪...</p>
+            </div>
+            <div style="position:absolute">
+                <a href="#" target=_blank><img src="./img/3.png" class="ysjy_img" width="350px" height="200px" /></a>
+                <p class="jsjy_LL_title">2019十大最受欢迎班主任</p>
+            </div>
+            <ul style="position:absolute;" id="itemlist">                
+                <li class="active">
+                    <a href="##">1</a>
+                </li>
+                <li>
+                    <a href="##">2</a>
+                </li>
+                <li>
+                    <a href="##">3</a>
+                </li>
+            </ul>
+        </div>
+</body>
+<script>
+    //定义立即执行函数表达式
+    (function(w,d){
+        //创建构造函数
+        //定义插件
+        function Plugin(picList,itemlist,times){
+            //将所涉及到的变量定义在构造函数内部this上
+            this.n=1;
+            //定义时间间隔
+            this.times = times;
+            // 获取元素
+            this.picList=d.getElementById("picList").children;
+            this.itemlist=d.getElementById("itemlist").children;
+            //初始化
+            this.init(this.picList);
+            //定时切换
+            this.timing(this.picList,this.itemlist,this.n);
+            //移动到标签上切换
+            this.move(this.picList,this.itemlist,this.n);
+        }
+        //将所涉及到的方法定义在构造函数的prototype上
+        //初始化方法
+        Plugin.prototype.init = function(picList){
+            picList[0].style.display = "block";
+            for (var i = 1; i < 3; i++) {
+                picList[i].style.display = "none";
+            }
+        }
+        //定时切换方法
+        Plugin.prototype.timing = function(picList,itemlist,n){
+            //设置定时函数，实现定时切换
+            var time = setInterval(function(){
+                picList[n].style.display = "block";
+                //classList 属性返回元素的类名,与add()、remove()方法匹配相使用
+                itemlist[n].classList.add("active");
+                for(var i = 0;i < 3;i++){
+                    if (i!=n) {
+                        picList[i].style.display = "none";
+                        itemlist[i].classList.remove("active");
+                    }
+                }
+                n=(n+1)%3;
+            },this.times);
+        }
+        //移动到标签上切换
+        Plugin.prototype.move = function(picList,itemlist,n){
+            for(var i = 0;i < 3;i++){//闭包操作，立即执行
+                (function(j){
+                    itemlist[j].onmouseover = function(){//当鼠标移上标签时
+                        n = j;
+                        picList[j].style.display = "block";
+                        itemlist[j].classList.add("active");
+                        for( var m = 0;m<3;m++){
+                            if(m!=j){
+                                picList[m].style.display = "none";
+                                itemlist[m].classList.remove("active");
+                            }
+                        }
+                    }
+                })(i)
+            }
+        }
+        w.Plugin = Plugin;
+    })(window,document)//将window、document对象作为参数传入
+    //在立即执行函数外部实例化该构造函数得到一个轮播图的插件效果
+    var plugin = new Plugin("picList","itemlist",2000);                    
+</script>
+
+</html>

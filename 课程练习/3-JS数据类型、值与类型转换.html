@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	//值类型
+	//开辟新的空间，两个对象独立
+	//在栈区
+	var num1 = 20;//20
+	var num2 = num1;//20. 把值赋给num2
+	var num1 = 10;//10
+
+
+	//引用类型
+	//指向堆区相同的对象
+	//栈区存储对象的引用、堆区存储实际对象
+	var object1 = {"username":"zhangsan"};
+	var object2 = object1;//赋值时把引用给object2
+	object2.username = "lisi";
+	console.log(object1);//lisi
+
+	//数组也是对象
+	var arr1 = [1,2,3,4];
+	var arr2 = arr1;
+	// arr2 = [1,2,3]; 此时将arr2指向了别的引用，此时不等于arr1 因此arr1=[1，2，3，4]
+	arr2[3]=5;//此时修改了arr1和arr2共同指向的引用
+	console.log(arr1);//[1,2,3,5]
+
+	//typeof数据类型检测的方法
+	console.log(typeof 2);//number
+
+	//赋值不同
+	var num3 = 10;
+	var num4 = 10;
+	console.log(num3 == num4);//true 判断值是否相等
+	console.log(num3 === num4);//true 基本数据类型的判等 判断值和类型是否相等
+
+	var object3 = {}; //object3、4 存储的是引用
+	var object4 = {};
+	console.log(object3 == object4);//false 判断变量所存储的引用是否相等
+	console.log(object3 === object4);//false 存储的引用不同
+
+
+	//字符串
+	var str = "abc_def";
+	console.log(str.slice(0,2));//ab 截取字符串、起始位置和结束位置
+	console.log(str.slice(0,-1));//abc_de
+
+	//分割字符串、分割符和生成数组的元素个数
+	console.log(str.split("_"));//["abc","def"] 生成数组
+
+	console.log(str.substr(0,3));//截取的起始位置，截取的长度
+
+	//包装对象
+	var str = new String("abcdef");//str是一个对象
+	var str1 = "abcedf";//str与str1使用方法没有区别
+	str1.substr(0,2);
+	//内部实现过程 装箱过程
+	var str1 = "abcedf";
+	var strObject = new String(str);//装箱
+	strObject.substr(0,2);//因此JS中所有都是对象
+
+	//顶层对象window
+	window.parseInt();//parseInt window对象的方法，把全局window省略了
+	window.str1;// window对象的属性，把全局window省略了
+
+	//数据类型转换
+	console.log(Boolean());
+
+	console.log(Number("abc"));//NaN
+</script>
+</html>

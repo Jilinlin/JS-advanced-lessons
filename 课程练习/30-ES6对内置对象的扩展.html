@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	// 一、ES6对String和RegExp的扩展
+
+	// ES6中提供了字符串遍历接口 可用for of循环遍历
+	let str = "abcdef";
+	for(let i of str){
+		console.log(i);
+	}
+	// ES6中提供新的方法用于查找、判断和生成字符串
+	// 返回类型为布尔类型
+	// indexOf(ES5)（位置）、includes（包含）、startsWith（以..开始）、endsWith(以..结束)、repeat（重复指定的次数）
+	str.repeat(4);//"abcdefabcdefabcdefabcdef"
+
+	//ES5、ES6中通过构造函数实例化正则对象的形式不同
+	let reg1 = /xyz/gi;//通用
+	let reg2 = new RegExp("xyz",'gi');
+	let reg2 = new RegExp(/xyz/gi);
+	let reg3 = new RegExp(/xyz/gi,'i');//有些浏览器不支持
+
+	//正则表达式对象.flags获取到正则表达式修饰符
+	console.log(reg1.flags);
+
+
+
+	//粘连sticky y修饰符 他会从上一次匹配成功的结束位置开始匹配
+	let str1 = "aaa_aa_a";
+	let reg5 = /a+/g;
+	let reg6 = /a+/y;
+	console.log(reg5.exec(str1));//返回匹配的结果
+	//["aaa", index: 0, input: "aaa_aa_a", groups: undefined]
+	console.log(reg5.exec(str1));//往后查找
+	//["aa", index: 4, input: "aaa_aa_a", groups: undefined]
+
+	console.log(reg6.exec(str1));//直接从结束位置开始匹配
+	//["aa", index: 4, input: "aaa_aa_a", groups: undefined]
+	reg6.lastIndex;//上一次匹配结果的索引位置
+	console.log(reg6.exec(str1));
+	//null
+	//可以根据正则对象的.sticky属性判断当前是否设置了y属性
+	console.log(reg6.sticky);
+
+
+	// ES6对Array和Object的扩展
+	// 类数组转换为数组
+	console.log(Array.from("abcdef"));
+	//["a", "b", "c", "d", "e", "f"]
+
+	//形参数量大于实参数量
+	function fn1(){
+		// console.log(arguments);//arguments类数组对象结构 包含索引值和具体参数值 有length属性
+		Array.from(arguments);
+	}
+	fn1(1,2,3);
+
+	console.log(Array.of(1,2,3));//把元素生成数组
+
+
+	// 复制数组里面的元素到数组的特定位置上
+	// arr1.copyWithin(target,start,end)
+	// target 复制的目标位置
+	// start 复制元素的起始位置
+	// end 复制元素的结束位置
+
+	var arr1 = [1,2,3,4,5,6];
+	arr1.copyWithin(0,3,5);//复制的目标位置 [复制的开始位置,复制的结束位置)
+
+	// Array.prototype.find
+	// 遍历数组中的元素，验证是否能满足回调函数的验证条件 返回满足条件的第一个数组元素
+	//验证数组中的每个元素是否满足条件 满足返回true
+	let arr2 = [10,15,20,30,40];
+	let el = arr2.find(function(element){
+		return element>19;
+	})
+	console.log(el);//20
+
+	//返回索引值
+	let elIndex = arr1.findIndex(function(element){
+		return element>29;
+	})
+	console.log(elIndex);
+
+	// fill(value,start,end)
+	//方法用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。不包括终止索引。
+	// var array1 = [1, 2, 3, 4];
+ //    // fill with 0 from position 2 until position 4
+ //    console.log(array1.fill(0, 2, 4));
+ //    // expected output: [1, 2, 0, 0]
+
+
+	// ES6里面对象的结构进行了简化
+	// 属性可以写成变量的形式
+	// 函数省略function 函数名(){}
+	let username = "lily";
+	let obj = {
+		username,
+		fn1(){
+			console.log(this.username);
+		}
+	}
+
+	let bar = "foo";
+	let obj1 = {
+		[bar]:"male", //用表达式作为对象的属性名
+		['a'+'bc']:123
+	}
+	console.log(obj1);
+	//{foo: "male"}
+	//abc:123
+
+
+	//可枚举属性进行合并 合并成一个新的对象
+	let obj2 = {username:"zhangsan"};
+	let obj3 = {age:20};
+	console.log(Object.assign(obj2,obj3));
+	// {username: "zhangsan", age: 20}
+	console.log(obj2.keys());
+	console.log(obj2.value());
+	console.log(obj2.entries());//返回一个给定对象自身可枚举属性的键值对数组
+
+	
+
+
+
+
+
+</script>
+</html>

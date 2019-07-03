@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	//Js对象是若干无序属性的集合（数据属性、访问器属性、内部属性）
+	//生成对象的三种方法：字面量、Object工场、构造函数
+
+	//JS没有类的概念，所有的都是对象
+	//JS采用的是原型的继承方法，每个对象都有一个原型对象，最原始的原型是null
+	//JS中的继承是对象-对象的原型继承，为面向对象提供了动态继承的功能
+	//任何方式创建的对象都有原型对象，可以通过对象的proto属性来访问原型对象
+
+	//js是基于对象的继承方式
+	var obj = {
+		num:1,
+		str:"hi",
+		sayHi:function(){
+			console.log(this.str);
+		}
+	};
+
+	var newObj = Object.create(obj);
+	console.log(newObj.__proto__ ==obj);
+	console.log(newObj.num);
+	newObj.sayHi();
+
+	//所有对象都有__proto__属性
+	var obj={z:3};
+	console.log(obj.__proto__);
+	// 所有对象都和它构造的原型是一样的
+	console.log(obj.__proto__ == Object.prototype);
+	//对象都有__proto__ 到头为null 
+	console.log(obj.__proto__.__proto__);
+
+	//所有对象原型链的尽头
+	//Object.prototype.__proto__==null
+	//原型链的顶层是Object.prototype
+	//只有构造函数有prototype属性
+
+	
+
+
+	//自有属性和继承属性
+	// 自变量形式的对象它的__proto__与构造函数prototype一样
+	// 即 obj1.__proto__==Object.prototype
+	// Object.prototype的下一级__proto__为null
+	var obj1 = {z:1};
+	var obj2 =  Object.create(obj1);
+	obj2.x=1;
+	obj2.y=2;
+	console.log(obj1.__proto__==Object.prototype);
+	console.log(obj2.__proto__);//obj1
+	console.log(obj2.__proto__.__proto__);
+	console.log(obj2.__proto__.__proto__.__proto__);//null
+	"z"in obj2; 
+	obj2.hasOwnProperty("z");
+
+	obj2.z=5;
+	obj2.hasOwnProperty('z'); //true
+	obj2.z;//5
+	obj1.z;//1
+
+	obj2.z=8;
+	obj2.z;//8
+
+	delete obj2.z;//true
+	obj2.z;//1
+
+	delete obj2.z; //删除只能删除自身的
+	obj2.z;//1
+
+	var obj1={z:1,sayHi:function(){
+		console.log(this.z);
+	}}
+	var obj2 = Object.create(obj1);
+	obj2.z;
+	obj2.sayHi();
+
+	// 通过构造函数实现原型的继承
+	// 构造函数实例化出的对象 其__proto__与构造函数的prototype一样
+	function Person(username,age){
+		this.username=username;
+		this.age=age;
+	}
+	Person.prototype.sayHi = function(){
+		console.log(this.username);
+	};//与直接写在对象里的区别
+	// 对象的指向相同 都是构造函数的prototype
+	// 对象可以公用方法 节省内存空间
+	// 每次实例化 都要添加一个方法 每个对象上都有一个sayHi
+	var person1 = new Person("zhangsan",30);
+	var person2 = new Person("lisi",40);
+	console.log(person1.__proto__==person2.__proto__);//相等
+	console.log(person.__proto__==Person.prototype);
+	person1.sayHi();
+	person2.sayHi();
+
+
+	Person.prototype==person.__proto__
+	Person.prototype.constructor==Person
+	Person.prototype.__proto__==Object.prototype
+	Object.prototype.constructor==Object
+	Object.prototype.__proto__==null
+
+	// 通过构造函数实现原型继承 本质与自变量形式一致
+	function MyObj(){
+		MyObj.prototype.z=3;
+	}
+	var obj = new MyObj();
+	obj.x = 1;
+	obj.y = 2;
+	"z" in obj;//true
+	obj.hasOwnProperty("z");//false
+
+	//定义一个车（car）的对象 height、width、weight
+	//创建一个小轿车对象，继承车相关的属性，自身具有color、seatNum
+	//create方法、以及构造函数的形式
+
+	var car = {
+		height:150,
+		width:200,
+		weight:2000
+	}
+	//1.用create方法
+	var smallcar = Object.create(car);
+	smallcar.color='red';
+	smallcar.seatNum=4;
+	console.log(smallcar.color);
+	console.log(smallcar.seatNum);
+	//2.用构造函数方法
+	function createsmallcar(color,seatNum){
+		this.color=color;
+		this.seatNum=seatNum;
+	}
+	createsmallcar.prototype = car;
+	var smallcar = new createsmallcar("red",4);
+
+
+	// 1.防止变量污染 独立的作用域 立即执行
+	// (function(){
+
+	// })();
+
+	// 2.防止变量的非期望共享 for循环 立即执行
+	// for(var i =0;i<3;i++){
+	// 	1.给元素绑定事件，回调函数
+	// 	2.延迟执行 定时执行
+	// 	(function(){
+
+	// 	})(i)
+	// 	每次循环形成自己的作用域，作用域相互独立不会产生影响
+	// }
+
+	// 闭包 js存在的代码运行机制
+	// 外层函数fn1 内层函数fn2
+	// 使作用域中的东西不会被释放掉 x一直保存在内存里
+	// function fn1(){
+	// 	var x = 0;
+	// 	function fn2(){
+	// 		return ++x;
+	// 	}
+	// 	return fn2;
+	// }
+	// var result = fn1();
+	// result();
+	// result();//变量不会被释放
+
+
+</script>
+</html>

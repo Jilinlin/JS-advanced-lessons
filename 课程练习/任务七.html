@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        button {
+            width: 200px;
+            height: 60px;
+            margin: 0 auto;
+            display: block;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <button id="btn">开始计数</button>
+</body>
+<script>
+	//ES6箭头函数应用
+    let btn = document.getElementById("btn");
+    let count = 0;
+    let intervalId;
+    // 使用布尔类型值进行实现是否继续进行计数的操作
+    let result = true;
+    btn.onclick = function() {
+    	if(result == true){
+    		result = false;
+    		intervalId = setInterval(()=>{
+                this.innerHTML = count++;
+            }, 1000);
+    	}else{
+    		clearInterval(intervalId);
+    		result = true;
+    	}
+        
+    }
+</script>
+</html>

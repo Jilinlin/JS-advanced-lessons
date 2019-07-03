@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	//通过字面量直接创建
+	var reg1 = /[bcf]at/gi; //[]从中任意取一个
+	//通过RegExp构造函数来实例化正则对象
+	var reg2 = new RegExp(/[bcf]at/,"gi");//字面量
+	var reg3 = new RegExp("[bcf]at","gi");//字符串
+
+	var str1 = "fat Fat bat cat mat jsadfas sd";
+	console.log(str1.match(reg1));
+	console.log("a fAt bat, a faT cat".match(reg1));
+
+	//g全局 i忽略大小写 m包含换行
+
+	// \d 匹配任意阿拉伯数字相当于[0-9]
+
+	// / /为分隔符号 中间为纯文本部分 gi为标识符 
+	// /正则表达式的文本部分/正则表达式的标识符
+	// [xyz]字符集合 匹配集合中的任意一个字符 可使用-表示字符范围
+	// g全局的检索，获取所有的匹配项还是只获取第一个
+	// i是否忽略大小写 i忽略大写
+	var reg1 = /[bcf]at/gi;
+	var reg2 = new RegExp(/[bcf]at/,"gi");//字面量
+	var reg3 = new RegExp("[bcf]at","gi");//字符串
+	var str = "fat cat bat Fat ojiidd isada";
+	var arr = str.match(reg1);//检索返回一个字符串匹配正则表达式的结果,结果为数组
+	console.log(arr);
+	// ["fat", "cat", "bat", "Fat"]
+
+	var reg1 = /[bcf]at/g;
+	var str = "fat cat bat Fat ojiidd isada";
+	var arr = str.match(reg1);//检索返回一个字符串匹配正则表达式的结果,结果为数组
+	console.log(arr);
+	// ["fat", "cat", "bat"]
+
+	var reg1 = /[bcf]at/i;
+	var str = "fat cat bat Fat ojiidd isada";
+	var arr = str.match(reg1);//检索返回一个字符串匹配正则表达式的结果,结果为数组
+	console.log(arr);
+	//["fat", index: 0, input: "fat cat bat Fat ojiidd isada", groups: undefined]
+
+
+/**
+ * Created by qile on 2017/10/23.
+ */
+//在控制台上测试，了解两点
+// 一、g全局、i大小写、m换行 修饰符的作用
+// 二、正则对象的两种基本使用方式 1.字符串.字符串方法（正则对象） 2.正则对象.正则方法（字符串）
+var regExp = /ab/i;
+var matchResult = "xxAbcaaBbxyz".match(regExp);
+console.log(matchResult);
+
+var regExp = /ab/gi;
+var matchResult = "xxAbcaaBbxyz".match(regExp);
+console.log(matchResult);
+
+var regExp = /a*b/gi; //注意*和.的区别 ，参见在线分析工具 https://regexper.com或https://jex.im/regulex
+//匹配前面的模式x 0或多次 字符出现次数
+var matchResult = "xxAbcaaBbxyz".match(regExp);
+console.log(matchResult);
+
+var regExp = /a.b/gi;//注意*和.的区别 ，参见在线分析工具 https://regexper.com或https://jex.im/regulex
+//任意的单个字符
+var matchResult = "xxAbcaaBbxyz".match(regExp);
+console.log(matchResult);
+
+//test初步了解
+var regExp = /a/i;
+console.log(regExp.test("ab"));
+console.log(regExp.test("ab"));
+console.log(regExp.test("ab"));
+console.log(regExp.test("ab"));
+
+var regExp = /a/gi;//思考如果加了g，循环了若干次后是true还是false，这是为什么？test中的lastIndex
+console.log(regExp.test("ab"));//true
+console.log(regExp.test("ab"));//false 为什么？
+console.log(regExp.test("ab"));//true
+console.log(regExp.test("ab"));//false 为什么？
+
+/*
+while (regExp.test("aaa")){
+    console.log(regExp.lastIndex);//每次执行后从哪开始重新匹配？
+}
+*/
+
+
+//字符类别：
+// \d匹配任意阿拉伯数字，等价于[0-9]
+// \D表示在特定位置上不是一个阿拉伯数字[^0-9]
+// \w匹配一个单字字符（字母、数字或者下划线）。等价于[A-Z，a-z，0-9，_]。
+// \W匹配一个非单字字符。等价于[^A-Z,a-z,0-9,_]。
+// \s匹配一个空白字符 例如, /\s\w*/ 匹配"foo bar."中的' bar'
+// \S匹配一个非空白字符 例如, /\S\w*/ 匹配"foo bar."中的'foo'
+// [xyz]从中括号的字符集合当中任取一个字符
+// [^xyz]排除中括号字符集合中的字符
+//边界
+// ^匹配输入的开始
+// $匹配结束的位置
+//match定义在字符串上
+//test定义在正则表达式上 方法 通过为true
+
+
+var reg4 = /a\dc/gi;
+var reg4_2 = /a\Dc/gi;
+var str4 = "a2c a3c abc";
+str4.match(reg4);
+str4.match(reg4_2);
+
+var str = "atf btf ktf";
+var reg = /[^abc]tf/gi;//该位置上不取abc
+str.match(reg);
+
+var reg1 = /^a[0-9]/gi;//匹配开始为a0-9的数字
+var str1 = "a1b2c3a3";
+str1.match(reg1);//只匹配字符串的开头
+
+var reg2 = /[0-9]z$/gi;//匹配以z结尾的
+var str2 = "abcd9z";
+var str2_2 = "asfvv9";
+str2.match(reg2);
+str2_2.match(reg2);
+reg2.test(str2);
+reg2.test(str2_2);
+
+//\d \D \w \W \s \S 案例
+"sdafsa sdfea2s".replace(/a\ds/g,"*");//"sdafsa sdfe*"
+"sdafsa sdfea2s".replace(/a\Ds/g,"*");//sd**dfea2s"
+"sdafsa sdfea2s".replace(/a\ws/g,"*");//"sd*a sdfe*"
+"sdafsa sdfea2s".replace(/a\Ws/g,"*");//"sdafs*dfea2s"
+
+//字符类 []
+console.log("absxsdfe123Ab".replace(/[abd]/,"X"));//Xbsxsdfe123Ab
+console.log("absxsdfe123Ab".replace(/[abd]/g,"X"));//XXsxsXfe123AX
+console.log("absxsdfe123Ab".replace(/[abd]/gi,"X"));//XXsxsXfe123XX
+
+// 字符类 的取反 [^]
+console.log("absxsdfe123Ab".replace(/[^abd]/,"X"));
+console.log("absxsdfe123Ab".replace(/[^abd]/g,"X"));
+console.log("absxsdfe123Ab".replace(/[^abd]/gi,"X"));
+
+//数量词
+//？表示之前的一个字符出现了0次或一次
+
+
+//量词 注意*在这里是量词，不是充当通配符，充当通配符的是 .
+//? 出现0次或1次（最多出现1次）
+console.log("AaBbAb_AaaBbbAba".replace(/Aa?/g,0));//0Bb0b_0aBbb0ba
+
+//+ 出现1次或多次（至少出现1次）
+console.log("AaBbAb_AaaBbbAba".replace(/Aa+/g,0));//0BbAb_0BbbAba
+
+//* 出现0次或多次（任意次）
+console.log("AaBbAb_AaaBbbAba".replace(/Aa*/g,0));//0Bb0b_0Bbb0ba
+
+//{n} 出现n次
+console.log("AaBbAb_AaaBbbAba".replace(/Aa{1}/g,0));//0BbAb_0aBbbAba
+console.log("AaBbAb_AaaBbbAba".replace(/Aa{2}/g,0));//AaBbAb_0BbbAba
+
+//{n,m} 出现n到m次
+console.log("AaBbAb_AaaBbbAba".replace(/Aa{1,2}/g,0));//0BbAb_0BbbAba
+
+//{n,} 出现至少n次
+console.log("AaBbAb_AaaBbbAbaAaaaaaaAaaAaaa".replace(/Aa{2,}/g,0));//AaBbAb_0BbbAba000
+//console.log("AaBbAb_AaaBbbAbaAaaaaaaAaaAaaa".replace(/Aa{2,4}/g,0));
+
+//注意：0到n次的写法{0,n}而不是{,n}
+
+
+/*
+ \d数字
+ .任意的一个字符
+ \s空格
+ \w[A-Za-z0-9_]
+*/
+var reg = /\d.\s/gi;
+
+
+/*
+从xyz中任意找一个字符
+[xyz]
+[^xyz]
+*/
+var reg = /[xyz]a/gi;
+var str1 = "xabjiya";
+str1.replace(reg,"m");
+
+/*
+ ^a 以特定字符起始
+ b$ 以特定的字符结束
+*/
+
+/*
+量词
+a? 出现0次或1次（最多出现1次）
+a+ 出现1次或多次（至少出现1次）
+a* 出现0次或多次（任意次）
+*/
+
+/*
+
+*/
+//exec 在一个指定字符串中执行一个搜索匹配，返回一个结果数组或null
+//会匹配两次 //匹配一次 （）匹配一次
+//分组可以看作当前正则表达式的子规则，分组匹配得到的内容，可以在exec方法调用的返回结果中查看
+var reg1 = /(abc)\d/gi;
+var str = "abc1efg2";
+var result = reg1.exec(str);
+console.log(result);
+
+
+var reg1 = /(ab\d)\d/gi;
+var str = "ab31efg2";
+var result = reg1.exec(str);
+console.log(result);
+
+//有两个分组
+//整体匹配一次
+//第一个分组匹配一次
+//第二个分组匹配一次
+var reg1 = /(ab\d)(\def)\d/gi;
+var str = "ab31ef1g2";
+var result = reg1.exec(str);
+console.log(result);
+
+//反向引用
+//通过斜杠加数字来引用前面出现的分组
+//数字表示前面出现的第几个分组
+
+//没有换成功 数字不匹配
+var reg2 = /(\d)a\1/gi;//再次引用第一个
+var reg3 = /(\d)a(\d)/gi;
+
+var str2 = "2a1sss";
+var result = str2.replace(reg2,"x");
+console.log(result);
+
+//换成功 xji
+var reg2 = /(ss)a\1/gi;//再次引用第一个
+var str2 = "ssassji";
+var result = str2.replace(reg2,"x");
+console.log(result);
+
+//字符串上面的方法
+//string.prototype
+//str.replace(正则表达式，“替换成的内容”);
+//str.match(正则表达式) 返回值是一个数组或者是null
+//整个正则表达式匹配到的内容，分组匹配到的内容，开始匹配位置的索引
+//str.search(正则表达式) 检索符合正则表达式规则的内容，如果检索到了返回其第一个字符出现的位置（得到在字符串中首次匹配项出现的索引位置）没有返回-1
+
+//正则上面的方法
+//RegExp.prototype
+//reg.test(字符串) 验证字符串是否符合正则表达式规则，符合返回true，不符合返回false
+
+
+var reg = /(ss)abc\d/gi;
+var str = "kkafd ssabc2";
+var result = str.match(reg);
+console.log(result);
+
+/*验证压缩文件格式*/
+var reg = /(.*)\.(rar|zip|7zip|tgz)$/;
+//(.*)压缩文件名字的规则 字符可以出现很多次
+//\.转义过程 表示实际的.,表示普通字符的.
+//(rar|zip|7zip|tgz)后缀名 任取一个类型
+//$以前面这个类型结尾
+
+/*验证颜色*/
+var reg1 = /^#[a-fA-F0-9]{6}$/;
+//^# 以#号开头
+//[a-fA-F0-9]表示集合，从中任取一个字符 
+//{6}表示之前的字符出现6次
+
+
+</script>
+</html>

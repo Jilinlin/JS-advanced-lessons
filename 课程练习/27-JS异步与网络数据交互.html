@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	这是一个网页
+	<img src="img/1.jpg" alt="">
+	<span id="title"></span>
+	<button id="btn">iq ajax</button>
+</body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script>
+	//同步任务:在主线程上排队执行的任务，只有前一个任务执行完毕，才能执行后一个任务
+	// 异步任务:不进入主线程、而进入"任务队列"(task queue)的任务，只有等主线程任务执 行完毕，"任务队列"开始通知主线程，请求执行任务，该任务才会进入主线程执行
+
+	// //同步
+	// for(var i = 0;i<10000000000000000000000000;i++){
+
+	// }
+	// console.log("前面的执行完了后面的才能执行 同步执行");
+
+	// //异步
+	// //先执行主程序，等时间到了去执行它
+	// setTimeout(function(){
+	// 	console.log("异步执行");
+	// },10000);
+	// console.log("主程序");
+
+	// //同步
+	// var i = 0;
+	// console.log(i);
+	// for(var i  = 0;i<10;i++){
+	// 	console.log(i);
+	// }
+
+
+	// //异步 
+ //    //不会阻塞主线程的执行，在满足特定条件时会反馈到主线程
+ 
+ //    window.onload= function(){
+ //    	console.log("页面加载完成");//2触发事件时再触发
+ //    }
+ //    console.log("主线程");//1
+ //    //定时程序也是异步执行
+ //    var i = 0; 
+ //    var intervalId = setInterval(function(){
+ //    	console.log(i++);
+ //    },3000)
+
+
+    //实现前后端交互的技术：Ajax
+    //以异步的方式实现了前后端数据的交互
+
+    // jQuery发起Ajax请求
+
+    // $.get("./server.php",function(res){
+    // 	console.log(res);
+    // })
+
+
+    //前端通过发起ajax请求的方式，来从服务器端获取数据
+    //请求方式有get请求和post请求
+    $.get("server.php",function(res){
+    	$("body").html(res);//数据从服务器端，可从数据库中获取
+    })
+
+    //在前端页面实现jQuery ajax请求
+    // ajax请求指明请求的后端程序的地址
+    // 后端程序接收到请求，做出响应
+    // 前端接受后端程序的响应内容，并在前端使用
+    // 前后端文件必须都放在服务器上面
+    //ajax从后端获取数据时可以不刷新整个页面
+    $("#btn").click(function(){
+    	$.ajax({
+    		url:"server.php",//后台地址
+    		type:"get",//请求类型get  从后端获取数据 post 从后端穿数据
+    		success: function(data){
+    			console.log(data);
+    		},
+    		error: function(err){
+    			console.log(err);
+    		}
+    	})
+    })
+    //从图片获取数据传到span中 不会刷新页面 实现页面的局部刷新
+    $("#btn").click(function(){
+    	$.ajax({
+    		url:"server.php",//后台地址
+    		type:"get",//请求类型get  从后端获取数据 post 从后端穿数据
+    		success: function(data){
+    			$("#title").html(data);
+    			console.log(data);
+    		},
+    		error: function(err){
+    			console.log(err);
+    		}
+    	})
+    })
+
+
+</script>
+</html>

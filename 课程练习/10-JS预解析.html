@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JS预解析</title>
+</head>
+<body>
+	
+</body>
+<script>
+	console.log(a);//undefined
+	if(true){
+		var a = 1;
+	};
+	console.log(a);//1
+
+	// 函数表达式
+	//var后面有一个function 将function函数作为一个表达式 不会对function进行提升 只会对变量进行提升
+	// foo(); //报错
+	console.log(foo);//undefined 
+	var foo = function(){
+		console.log("foo");//不会对函数进行提升
+	};
+	foo();//foo
+
+	// 当function前有运算符时，认定为表达式，不进行提升
+
+	// 变量名同函数名
+	// 函数声明提升要比变量声明提升靠上
+	AA();
+	function AA(){//提到最上面
+		console.log("AA_1");
+	}
+
+	var AA = function AA(){ //var AA 提到次上面
+		console.log("AA_2");
+	};
+	AA();
+
+
+
+</script>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	// promise 将异步的代码与 同步的方式进行执行
+	setTimeout(function(){
+		console.log("时间到")
+	},3000);
+	console.log("同步代码1");
+	console.log("同步代码2");
+	// 先执行同步代码再执行异步操作
+
+
+	// 将异步执行放在前面
+	// 等三秒后顺序执行
+	// 先执行异步操作 再执行同步操作
+	// 返回值还是promise
+	new Promise(function(resolve,reject){//成功，失败
+		// 异步操作
+		resolve();//异步操作成功时调用
+		reject();//异步操作失败时调用
+	}).then(function(){//resolve函数的定义
+
+	},function(){//reject函数的定义
+
+	}).catch(function(){
+		// 捕获前面位置发生的异常
+	}).finally(function(){
+		// 无论如何都会执行
+	})
+
+
+	new Promise(function(resolve,reject){//两个回调函数
+		setTimeout(function(){
+			console.log("时间到");
+			resolve("hello");//异步操作成功时的回调函数
+		},3000);
+	}).then(function(val){//resolve函数所指代的 then中的第一个function
+		console.log("resolve被调用");
+		console.log(val);//可以传入参数
+	},function(){//失败时调用
+
+	}).catch(function(){
+		// 捕获前面位置发生的异常
+	}).finally(function(){
+		// 无论如何都会执行
+	})
+
+
+
+
+
+</script>
+</html>

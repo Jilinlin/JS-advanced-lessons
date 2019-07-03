@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>立即执行函数</title>
+</head>
+<body>
+	
+</body>
+<script>
+	// 匿名的立即执行函数
+	// 将函数立即执行并传入对应参数
+	//作用 避免变量污染、变量重名、出现变量共享问题
+	//两种写法
+	//1.
+	//(function 函数名(参数){
+		//函数体
+	//}（实参）)
+	(function max(x,y){
+		return x>y?x:y;
+	}(2,3));//3
+
+	(function(x,y){
+		return x>y?x:y;
+	}(2,3));//3
+
+	//2.
+	(function min(a,b){
+		return a>b?b:a;
+	})(2,3);//2
+
+	// 特殊立即执行函数
+	!function(){
+		return 2;
+	}();//false
+
+	!function(){
+		return 0;
+	}();//true
+
+	var userId = 12;
+	document.onclick = function(){
+		alert(userId);
+	};
+	//一长串代码
+	(function(){
+		if(true){
+		var userId = 34;
+	    }
+	})()
+
+	//避免变量共享错误
+	function f(){
+		var getNumFuncs =[];
+		for(var i =0;i<10;i++){
+			getNumFuncs[i]=function(){
+				return i;
+			};
+		}
+		return getNumFuncs;
+	}
+	var tmp = f();
+	tmp[3]();
+
+	function foo(){
+		var arr1 = [];
+		for(var i=0;i<10;i++){
+			arr1[i] = function(){
+				return i;//不会立刻执行 只是return了一个i 只有函数执行时i值才确定 全局变量中只有一个i 循环结束后i=10 变量共享所有的i都为10
+			}
+		}
+		return arr1;
+	}
+	var arr2 = foo();
+	arr2[0]();//10
+	console.log(arr2);
+
+	function foo(){
+		var arr1 = [];
+		for(var i=0;i<10;i++){
+			arr1[i] = (function(){
+				return i;//循环结束后i=10 变量共享所有的i都为10
+			})();
+		}
+		return arr1;
+	}
+	var arr2 = foo();
+	// arr2[0]();//10
+	console.log(arr2);
+
+
+	//形成10个作用域，作用域内的j值各不相同，且不共享
+	function foo(){
+		var arr1 = [];
+		for(var i=0;i<10;i++){//10个匿名函数形成10个作用域 
+
+			(function(j){
+				arr1[j]=function(){
+					return j;
+				}
+			})(i)
+
+
+			// arr1[i] = function(){
+			// 	return i;//循环结束后i=10 变量共享所有的i都为10
+			// }();
+		}
+		return arr1;
+	}
+	var arr2 = foo();
+	arr2[0]();//10
+
+
+
+	//1.立即执行函数表达式
+	//2.避免变量的污染，形成一个独立的空间，变量仅在该作用域内起作用
+
+
+	//初始结构
+	function fn(){
+		var arr1=[];
+		for(var i = 0;i<10;i++){
+			arr1[i] = function(){
+				return i;
+			}
+		}
+		return arr1;
+	}
+
+	//等价结构
+	// var i = 0;
+	// arr1[0] = function(){
+	// 	return i;
+	// }
+	// arr1[1] = function(){
+	// 	return i;
+	// }
+	// fn()[0]();
+	//return的i是共有的
+	//只是完成了函数的定义，此时并没有执行
+
+	//外部调用执行时，循环已经结束了，i值已到达最大值，且i值是共享的，因此所有的i都为10
+
+
+	//立即执行函数
+	//每次循环形成自己的作用域，把i的当前值传进去，让函数内的内容立即执行
+	function fn(){
+		var arr1=[];
+		for(var i = 0;i<10;i++){
+			(function(j){
+				arr1[j] = function(){
+				return j;
+			    }
+			})(i)
+		}
+		return arr1;
+	}
+
+	//等价类型
+	//j值在她自己的作用域里起作用
+	// (function(j){
+	// 	arr1[j]=function(){
+	// 		return j;
+	// 	}
+	// })(0)
+	// (function(j){
+	// 	arr1[j]=function(){
+	// 		return j;
+	// 	}
+	// })(1)
+
+	//避免变量的非期望共享
+
+
+	//减少查找过程，作为局部变量直接使用,不需要再去外部查找
+	// (function(w,d){
+	// 	d.getElementById()
+	// })(window,document)
+
+	// //作用域查找，作用域链越长，代码的执行效率越低
+	// (function(){
+	// 	document.getElementById()
+	// })
+
+	// (function(w,d){
+	// 	var spanList = document.getElementByTagName("span");
+	// 	var show = document.getElementsByClassName("show")[0];
+	// 	for(var i = 0;i<spanList.length;i++){
+	// 		(function(j){
+	// 			spanList[j].onclick=function(){
+	// 			show.innerText="导航"+j+"内容";
+	// 		    }
+	// 		})(i)//形成作用域，每个作用域内j值不相同
+
+	// 		spanList[i].onclick=function(){
+	// 			show.innerText="导航"+i+"内容";//触发点击事件时，i值循环已经结束，i为最大值
+	// 		}
+	// 	}
+
+	// })(window,document)
+
+
+	//三次延迟执行，结果都为3
+	for(var i =0;i<3;i++){
+		setTimeout(function(){
+			console.log(new Date(),i);
+		},i*1000);
+	}
+	//嵌套立即执行函数，三次延迟执行，结果为0、1、2
+	for(var i =0;i<3;i++){
+		(function(j){
+			setTimeout(function(){
+			console.log(new Date(),j);
+		    },j*1000);
+		})(i);
+	}
+
+
+
+
+</script>
+</html>

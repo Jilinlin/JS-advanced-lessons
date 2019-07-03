@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务四</title>
+</head>
+<body>
+	
+</body>
+<script>
+	function Foo(userName,age){
+		this.userName = userName;
+		this.age = age;
+	}	
+	Foo.prototype.sayHello = function(){
+		console.log(this.userName + "say hello");
+	}
+	var f1 = new Foo("zhangsan",20);
+
+
+	// 关系一：f1对象的__proto__属性与其构造函数Foo的prototype属性，指向相同。
+	console.log(f1.__proto__==Foo.prototype);//true
+	// 所以通过Foo实例化得到的对象可以去Foo.prototype上查找方法，例如sayHello方法
+	f1.sayHello();//zhangsansay hello
+
+
+
+	//关系二：f1父对象（Foo.prototype）的__proto__属性与Object函数的prototype属性，指向相同。
+	console.log(Foo.prototype.__proto__==Object.prototype);//true
+	// f1父对象的__proto__属性相当于f1.__proto__.__proto__,即f1.__proto__.__proto__==Object.prototype
+	//通过Object实例化得到的对象可以去Object.prototype上查找方法
+	Object.prototype.sayName = function(){
+		console.log("my name is"+this.userName);
+	}
+	f1.sayName();//my name iszhangsan
+
+
+	//关系三：Object.prototype对象的__proto__属性指向为原型链的顶端null
+    console.log(Object.prototype.__proto__==null);//true
+    //f1.__proto__==Foo.prototype;
+    //f1.__proto__.__proto__==Object.prototype;
+    //f1.__proto__.__proto__.__proto__==Object.prototype.__proto__;
+
+
+    //关系四：Foo.prototype是从一个函数指向一个对象，是函数的原型对象，也就是这个函数所创建的实例的原型对象。
+    //包含可以由特定类型的所有实例共享的属性和方法，也就是让该函数所实例化的对象们都可以找到公用的属性和方法。
+    //任何函数在创建的时候，其实会默认同时创建该函数的prototype对象。
+    console.log(Foo.prototype==Foo.prototype);//true
+
+
+    //关系五：原型对象Foo.prototype的constructor属性指向的是构造函数Foo
+    //constructor属性是从一个对象指向一个函数，是指向该对象的构造函数
+    console.log(Foo.prototype.constructor == Foo);//true
+
+
+    //关系六：__proto__属性是对象所独有的，但函数也是一种对象，所以函数也拥有__proto__属性
+    // Function可以看成是一个函数，也可以是一个对象，所有函数和对象最终都是由Function构造函数得来，因此Foo就是Function实例化得到的对象，所以Foo的__proto__属性与其构造函数Function的prototype属性指向相同
+    console.log(Foo.__proto__ == Function.prototype);//true
+
+
+    //关系七：Object和Function既是对象，又是函数，两者内部同时含有proto和prototype属性，Function.prototype指向”内置函数“。而Object.prototype指向”根源对象“
+    console.log(Function.prototype.__proto__ == Object.prototype); //true
+
+    //关系八：o1对象的__proto__属性与其构造函数Object的prototype属性，指向相同。
+    //Object实例化得到的对象可以去Object.prototype上查找属性方法
+    var o1 = new Object();
+    console.log(o1.__proto__ == Object.prototype);//true
+
+
+    //关系九：Object.prototype是从一个函数指向一个对象，是函数的原型对象，也就是这个函数所创建的实例的原型对象。
+    //即构造函数Object()的prototype 属性指向该构造函数创建的实例对象的原型
+    console.log(Object.prototype==Object.prototype);//true
+
+
+    //关系十：原型对象Object.prototype的constructor属性指向的是构造函数Object
+    console.log(Object.prototype.constructor == Object);//true
+
+
+    //关系十一：所有函数和对象最终都是由Function构造函数得来，因此Object是Function实例化得到的对象。
+    //即Object的__proto__属性与其构造函数Function的prototype属性指向相同
+    console.log(Object.__proto__ == Function.prototype);//true
+
+
+    //关系十二：Function可以看成是一个函数，也可以是一个对象，它的构造函数就是它自己
+    //即构造函数Function()的prototype属性 指向该构造函数创建的实例化对象的原型
+    console.log(Function.prototype == Function.prototype);//true
+
+
+    //关系十三：constructor属性的含义就是指向该对象的构造函数，Function这个对象它的构造函数就是它自己。
+    //即原型对象Function.prototype的constructor属性指向的是构造函数Function
+    console.log(Function.prototype.constructor == Function);//true
+
+
+    //关系十四：Function是由他自己构建的，所以Function也是由Function实例化得到的对象。
+    //即Function的__proto__属性与其构造函数Function的prototype属性指向相同。
+    console.log(Function.__proto__ == Function.prototype);//true
+	
+</script>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	console.log(20&&0);//0 返回原始操作数 原始操作数为0
+	console.log(null&&10);//null
+	console.log(2&&4);//4
+	console.log(0&&4);//0
+	console.log({x:2}&&{name:"jack"});//对象转换成true {name:"jsck"}
+	console.log(null&&"hello");//null
+	console.log({}&&"world");//world
+
+	//短路原则
+	var score = 76;
+	if(score>90){
+		console.log("优");
+	}else if(score>75){
+		console.log("良");
+	}else if(score>60){
+		console.log("及格")
+	}else{
+		console.log("不及格")
+	}
+	console.log((score>90&&"优")||(score>75&&"良")||(score>60&&"及格")||"不及格");
+
+	//switch 和case 做的是全等的判断，值和类型必须均相等
+	switch(true){
+		case score>90:
+		    console.log("优");
+		    break;
+		case score>80:
+            console.log("良");
+            break;
+        default:
+            console.log("不合格");
+            break;
+	}
+
+	//定义函数的形参和调用函数的实参个数可以不一致
+	function sum(x,y,z){//相当于x,y,z声明了，但未赋值 因此为undefined
+		console.log(x,y,z);
+		// undefined转换为布尔类型为false
+		//||操作 可以做函数操作的默认值
+		x = x||1;//考虑false情况 (b!=false)&&(b=b||4);
+		y = y||2;
+		z = z||3;
+		return x + y +z;
+	}
+	console.log(sum());//NaN 非数值类型，不会报错
+	console.log(sum(2,3,4));//左为真，取左
+	//所存在的bug，返回值可能不是预期结果 传入false 希望false为布尔类型0 但||操作false||a,会取a
+	console.log(sum(false,3,4));
+
+	//ES6 设置函数默认值的方式，直接赋值
+	function sum1(x,y=2,z=3){
+		return x+y+z;
+	}
+	sum1(1);//6
+</script>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <title>
+            calculate
+        </title>
+        <meta http-equiv="Content-Type" content="text/html;charaset = utf-8" />
+        <style type="text/css">
+            body {
+                font:bolder 26px 楷体;
+            }
+            #result {
+                text-align:right;
+            }
+            table,td {
+                border:1px solid #C0C0C0;
+            }
+            td {
+                padding:10px;
+            }
+            button {
+                width:50px;
+                height:50px;
+            }
+            .box-shadow{  
+                box-shadow: 3px 3px 3px #eee;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <table>
+            <tr>
+                <td colspan="3" id="result">
+                    0
+                </td>
+                <td>
+                    <button type="button" value="C">
+                        C
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="button" value="1" >
+                        1
+                    </button>
+                </td>
+                <td>
+                    <button type="button" value="2">
+                        2
+                    </button>
+                </td>
+                <td>
+                    <button type="button" value="3">
+                        3
+                    </button>
+                </td>
+                <td>
+                    <button type="button" value="+">
+                        +
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="button" value="4">
+                        4
+                    </button>
+                </td>
+                <td>
+                    <button type="button" value="5">
+                        5
+                    </button>
+                </td>
+                <td>
+                    <button type="button" value="6">
+                        6
+                    </button>
+                </td>
+                <td>
+                    <button type="button" value="-">
+                        -
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="button" value="7">
+                        7
+                    </button>
+                </td>
+                <td>
+                    <button type="button" value="8">
+                        8
+                    </button>
+                </td>
+                <td>
+                    <button type="button" value="9">
+                        9
+                    </button>
+                </td>
+                <td>
+                    <button type="button" value="*">
+                        *
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="button" value="0">
+                        0
+                    </button>
+                </td>
+                <td>
+                    <button type="button" value=".">
+                        .
+                    </button>
+                </td>
+                <td>
+                    <button type="button" value="=">
+                        =
+                    </button>
+                </td>
+                <td>
+                    <button type="button" value="/">
+                        /
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </body>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script>
+        
+        //鼠标箭头移动到计算器按钮上时，有box-shadow阴影效果
+        $("button").mouseover(function(){
+            $(this).addClass("box-shadow");
+        }).mouseout(function(){
+            $(this).removeClass("box-shadow");
+        })   
+        $("button").click(function(){
+            var num = $(this).val();
+            var formula = $("#result").html().replace(/\s/g,"");
+            var result = 0;//存放结果
+
+            if(num == 'C'){//点击C按钮，进行清0操作
+                $("#result").html("0");
+            }else if(num == '='){//点击=按钮时进行计算显示运算结果
+                var reg=/-?\d+\.\d+/;
+                result=String(eval(formula));
+                if(reg.test(result)==true){
+                    $("#result").html(Number(result).toFixed(2));//保留两位小数
+                }else{
+                    $("#result").html(result);
+                } 
+            }else{//点击普通按钮在result区域显示运算式   
+                if(formula == "0"){
+                    $("#result").html(num);
+                }else{
+                    $("#result").html(formula+num);
+                }               
+            }            
+        })
+    </script>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	// iterator遍历器机制
+	// 为各种数据结构，提供一个统一的、简便的访问接口
+    // 使得数据结构的成员能够按某种次序排列
+    //  ES6 创造了一种新的遍历命令for...of循环
+
+    // 使用ES5实现一个遍历器的效果
+    // 遍历器对象本质是一个指针对象
+    function createIterator(arr){//定义函数 传入数组元素
+    	var i = 0;
+    	return {//返回对象 包含next方法
+    		next:function(){//next方法相当于指针作用 根据当前的i值来取当前元素的下一个元素
+    			return i<arr.length?
+    			{value:arr[i++],done:true}:
+    			{value:undefined,done:false};
+    		}
+    	}
+    }
+    var iterator = createIterator([1,2,3,4]);
+    console.log(iterator.next());//{value: 1, done: true}
+    console.log(iterator.next());//{value: 2, done: true}
+    console.log(iterator.next());//{value: 3, done: true}
+    console.log(iterator.next());//{value: 4, done: true}
+    console.log(iterator.next());//{value: undefined, done: false}
+
+
+
+
+
+
+    //原生具备 Iterator 接口的数据结构，可以使用for…of循环自动遍历。
+    let arr1 = [1,2,3,4,5,6];
+    for(let i of arr1){
+    	console.log(arr1[i]);
+    }
+
+    let m1 = new Set([1,2,3,4]);//map键值对
+    for(let i of m1){
+    	console.log(m1[i]);
+    }
+
+    // arguments
+
+    // 判断数据结构能否被遍历器所遍历
+    // 不能直接针对对象应用遍历器
+    let arr2 = [1,2,3];
+    let person = {"name":"zhangsan","age":20};
+    console.log(arr2[Symbol.iterator]);
+
+    //生成器
+    //生成一个遍历器
+    function* helloGenerator(){//生成器函数的返回值是一个遍历器
+    	//通过yield定义了一个个状态
+    	yield "hello";
+    	yield "world";
+    	return "ending";
+    }
+    //每次调用next()，均会返回一个状态
+    var iterator = helloGenerator();
+    console.log(iterator.next());//{value: "hello", done: false}
+    console.log(iterator.next());//{value: "world", done: false}
+    console.log(iterator.next());//{value: "ending", done: true}
+    console.log(iterator.next());//{value: undefined, done: true}
+
+
+
+    //Generator可以用于给元素添加Iterator 接口
+    //给对象添加生成器结构
+    let obj = {};
+    obj[Symbol.iterator] = function*(){
+    	yield 1;
+    	yield 2;
+    	yield 3;
+    }
+    for(let i of obj){
+    	console.log(i);
+    }
+
+    let str = "abcdefg";
+    for(let i of str){
+    	console.log(i);
+    }
+    // 一旦next方法的返回对象的done属性为true，for...of循环就会中止。
+
+
+    // 可以被遍历器遍历的有length属性且
+
+
+</script>
+</html>
